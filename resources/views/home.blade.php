@@ -1,4 +1,12 @@
-@extends('layouts.admin', ['title' => 'My Profile'])
+@if(auth()->user()->user_type == 'admin')
+    @extends('layouts.admin', ['title' => 'My Profile'])
+@elseif(auth()->user()->user_type == 'customer')
+    @extends('layouts.customer')
+@else
+    @extends('layouts.vendor')
+@endif
+
+{{-- @extends('layouts.admin', ['title' => 'My Profile']) --}}
 
 @section('mainContent')
 <div class="container">
@@ -14,6 +22,8 @@
         </div>
         <div>
             <p>Upload Profile</p>
+            <form action="/upload" method="POST" enctype="multipart/form-data">
+            @csrf
             <div class="upload-container">
                 <label for="image" class="file-uploader">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-upload" viewBox="0 0 16 16">
@@ -21,8 +31,11 @@
                         <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z"/>
                     </svg>
                     <input type="file" class="d-none" id="image"/>
+                    
                 </label>
+                <button value="submit" class="btn btn-primary">Upload</button>
             </div>
+            </form>
         </div>
 
     </div>
